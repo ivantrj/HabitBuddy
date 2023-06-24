@@ -11,7 +11,7 @@ struct AddHabitView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var habits: [Habit]
     @State private var habitName = ""
-    @State private var habitFrequency = ""
+    @State private var frequency: [Bool] = Array(repeating: false, count: 7) // Array representing days of the week
     @State private var remindMe = false
     
     var body: some View {
@@ -19,7 +19,30 @@ struct AddHabitView: View {
             Form {
                 Section(header: Text("Habit Details")) {
                     TextField("Habit Name", text: $habitName)
-                    TextField("Frequency", text: $habitFrequency)
+                    VStack(alignment: .leading) {
+                        Text("Frequency")
+                        Toggle(isOn: $frequency[0]) {
+                            Text("Sunday")
+                        }
+                        Toggle(isOn: $frequency[1]) {
+                            Text("Monday")
+                        }
+                        Toggle(isOn: $frequency[2]) {
+                            Text("Tuesday")
+                        }
+                        Toggle(isOn: $frequency[3]) {
+                            Text("Wednesday")
+                        }
+                        Toggle(isOn: $frequency[4]) {
+                            Text("Thursday")
+                        }
+                        Toggle(isOn: $frequency[5]) {
+                            Text("Friday")
+                        }
+                        Toggle(isOn: $frequency[6]) {
+                            Text("Saturday")
+                        }
+                    }
                     Toggle("Remind Me", isOn: $remindMe)
                 }
             }
@@ -38,7 +61,7 @@ struct AddHabitView: View {
     
     private var saveButton: some View {
         Button(action: {
-            let newHabit = Habit(name: habitName, frequency: habitFrequency, remindMe: remindMe)
+            let newHabit = Habit(name: habitName, frequency: frequency, remindMe: remindMe)
             habits.append(newHabit)
             presentationMode.wrappedValue.dismiss()
         }) {
